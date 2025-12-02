@@ -1,0 +1,116 @@
+# Project Configuration
+project_name = "my-project"
+environment  = "dev"
+aws_region   = "us-east-1"
+
+# Cluster Configuration
+cluster_name    = "my-project-dev-eks"
+cluster_version = "1.28"
+
+# VPC Configuration
+vpc_cidr         = "10.0.0.0/16"
+availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+enable_nat_gateway = true
+single_nat_gateway  = false  # Set to true for dev to save costs
+enable_vpc_endpoints = true
+
+# Load Balancer Configuration
+load_balancer_type      = "ALB"  # Options: "ALB" or "NLB"
+load_balancer_internal  = false
+enable_deletion_protection = false
+
+# Ingress Configuration
+ingress_node_port = 30001
+enable_ingress_ssl = false
+
+# Nexus Registry Configuration
+nexus_registry_url        = "nexus.example.com:8082"
+nexus_registry_secret_name = "nexus-registry-secret"
+
+# Storage Configuration
+storage_class_name    = "gp3"
+storage_class_type    = "gp3"
+volume_binding_mode   = "WaitForFirstConsumer"
+reclaim_policy        = "Delete"
+allow_volume_expansion = true
+
+# Node Groups Configuration
+node_groups = {
+  general = {
+    instance_types = ["t3.medium"]
+    capacity_type  = "ON_DEMAND"
+    min_size      = 2
+    max_size      = 5
+    desired_size  = 3
+    disk_size     = 50
+    labels        = {}
+    taints        = []
+  }
+  kafka = {
+    instance_types = ["t3.large"]
+    capacity_type  = "ON_DEMAND"
+    min_size      = 3
+    max_size      = 6
+    desired_size  = 3
+    disk_size     = 100
+    labels        = {
+      workload-type = "kafka"
+    }
+    taints        = []
+  }
+  monitoring = {
+    instance_types = ["t3.medium"]
+    capacity_type  = "ON_DEMAND"
+    min_size      = 2
+    max_size      = 4
+    desired_size  = 2
+    disk_size     = 50
+    labels        = {
+      workload-type = "monitoring"
+    }
+    taints        = []
+  }
+  logging = {
+    instance_types = ["t3.large"]
+    capacity_type  = "ON_DEMAND"
+    min_size      = 2
+    max_size      = 5
+    desired_size  = 2
+    disk_size     = 100
+    labels        = {
+      workload-type = "logging"
+    }
+    taints        = []
+  }
+}
+
+# Cluster Features
+enable_cluster_autoscaler = false
+enable_irsa               = true
+
+# Workloads Configuration
+enable_kafka      = true
+enable_elk        = true
+enable_prometheus = true
+enable_grafana    = true
+
+# Node Selectors for Workloads
+kafka_node_selector = {
+  workload-type = "kafka"
+}
+
+elk_node_selector = {
+  workload-type = "logging"
+}
+
+monitoring_node_selector = {
+  workload-type = "monitoring"
+}
+
+# Common Tags
+common_tags = {
+  Team        = "DevOps"
+  CostCenter  = "Engineering"
+  Application = "EKS-Platform"
+}
+
