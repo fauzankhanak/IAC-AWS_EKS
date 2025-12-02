@@ -82,6 +82,7 @@ module "load_balancer" {
   security_group_ids        = [module.security_groups.load_balancer_security_group_id]
   internal                  = var.load_balancer_internal
   enable_deletion_protection = var.enable_deletion_protection
+  waf_web_acl_arn           = var.enable_waf ? module.security.waf_web_acl_arn : ""
   tags                      = var.common_tags
 }
 
@@ -110,8 +111,53 @@ module "ingress" {
   node_port                 = var.ingress_node_port
   nexus_registry_url        = var.nexus_registry_url
   nexus_registry_secret_name = var.nexus_registry_secret_name
+  nexus_secret_arn          = module.secrets_manager.nexus_secret_arn
   enable_ssl                = var.enable_ingress_ssl
   tags                      = var.common_tags
+}
+
+# AWS Security Services Module
+module "security" {
+  source = "./modules/security"
+
+  project_name        = var.project_name
+  environment         = var.environment
+  enable_guardduty     = var.enable_guardduty
+  enable_security_hub = var.enable_security_hub
+  enable_config       = var.enable_config
+  enable_cloudtrail   = var.enable_cloudtrail
+  enable_waf          = var.enable_waf
+  enable_inspector     = var.enable_inspector
+  cloudtrail_s3_bucket = var.cloudtrail_s3_bucket
+  config_s3_bucket     = var.config_s3_bucket
+  waf_scope           = var.waf_scope
+  tags                = var.common_tags
+}
+
+# Secrets Manager Module
+module "secrets_manager" {
+  source = "./modules/secrets-manager"
+
+  project_name      = var.project_name
+  environment        = var.environment
+  nexus_registry_url = var.nexus_registry_url
+  nexus_username     = var.nexus_username
+  nexus_password     = var.nexus_password
+  kms_key_id         = module.eks.kms_key_arn
+  tags               = var.common_tags
+}
+
+# Kubernetes Security Module
+module "kubernetes_security" {
+  source = "./modules/kubernetes-security"
+
+  cluster_name                  = var.cluster_name
+  cluster_endpoint              = module.eks.cluster_endpoint
+  cluster_ca_certificate        = module.eks.cluster_certificate_authority_data
+  enable_pod_security_standards = var.enable_pod_security_standards
+  pod_security_standard_level   = var.pod_security_standard_level
+  enable_network_policies        = var.enable_network_policies
+  tags                          = var.common_tags
 }
 
 # Workloads Module
@@ -122,7 +168,7 @@ module "workloads" {
   cluster_endpoint          = module.eks.cluster_endpoint
   cluster_ca_certificate    = module.eks.cluster_certificate_authority_data
   nexus_registry_url        = var.nexus_registry_url
-  nexus_registry_secret_name = var.nexus_registry_secret_name
+  nexus_registry_secret_name = module.secrets_manager.nexus_secret_name
   enable_kafka              = var.enable_kafka
   enable_elk                = var.enable_elk
   enable_prometheus         = var.enable_prometheus

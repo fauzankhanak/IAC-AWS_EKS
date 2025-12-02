@@ -30,6 +30,12 @@ variable "nexus_registry_secret_name" {
   default     = "nexus-registry-secret"
 }
 
+variable "nexus_secret_arn" {
+  description = "ARN of the Nexus registry secret in AWS Secrets Manager (optional)"
+  type        = string
+  default     = ""
+}
+
 variable "enable_ssl" {
   description = "Enable SSL/TLS for ingress"
   type        = bool

@@ -25,6 +25,14 @@ resource "aws_lb" "alb" {
   )
 }
 
+# WAF Association for ALB
+resource "aws_wafv2_web_acl_association" "alb" {
+  count = var.lb_type == "ALB" && var.waf_web_acl_arn != "" ? 1 : 0
+
+  resource_arn = aws_lb.alb[0].arn
+  web_acl_arn  = var.waf_web_acl_arn
+}
+
 # Network Load Balancer
 resource "aws_lb" "nlb" {
   count = var.lb_type == "NLB" ? 1 : 0

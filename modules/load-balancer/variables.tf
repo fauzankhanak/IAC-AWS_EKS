@@ -44,6 +44,12 @@ variable "enable_deletion_protection" {
   default     = false
 }
 
+variable "waf_web_acl_arn" {
+  description = "ARN of the WAF Web ACL to associate with the load balancer (optional)"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Additional tags to apply to resources"
   type        = map(string)

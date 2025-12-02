@@ -26,6 +26,8 @@ enable_ingress_ssl = false
 # Nexus Registry Configuration
 nexus_registry_url        = "nexus.example.com:8082"
 nexus_registry_secret_name = "nexus-registry-secret"
+nexus_username            = "your-nexus-username"  # Sensitive - use TF_VAR_nexus_username or secrets
+nexus_password            = "your-nexus-password"  # Sensitive - use TF_VAR_nexus_password or secrets
 
 # Storage Configuration
 storage_class_name    = "gp3"
@@ -106,6 +108,22 @@ elk_node_selector = {
 monitoring_node_selector = {
   workload-type = "monitoring"
 }
+
+# Security Configuration
+enable_guardduty     = true
+enable_security_hub  = true
+enable_config        = true
+enable_cloudtrail    = true
+enable_waf           = true
+enable_inspector     = true
+waf_scope           = "REGIONAL"  # Options: "REGIONAL" or "CLOUDFRONT"
+cloudtrail_s3_bucket = ""  # Leave empty to auto-create
+config_s3_bucket     = ""  # Leave empty to auto-create
+
+# Kubernetes Security
+enable_pod_security_standards = true
+pod_security_standard_level   = "baseline"  # Options: "restricted", "baseline", "privileged"
+enable_network_policies        = true
 
 # Common Tags
 common_tags = {

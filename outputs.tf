@@ -106,3 +106,35 @@ output "node_group_role_arn" {
   value       = module.iam.node_group_role_arn
 }
 
+# Security Outputs
+output "guardduty_detector_id" {
+  description = "ID of the GuardDuty detector"
+  value       = module.security.guardduty_detector_id
+}
+
+output "security_hub_account_id" {
+  description = "Account ID where Security Hub is enabled"
+  value       = module.security.security_hub_account_id
+}
+
+output "cloudtrail_arn" {
+  description = "ARN of the CloudTrail"
+  value       = module.security.cloudtrail_arn
+}
+
+output "waf_web_acl_arn" {
+  description = "ARN of the WAF Web ACL"
+  value       = module.security.waf_web_acl_arn
+}
+
+output "config_recorder_name" {
+  description = "Name of the Config recorder"
+  value       = module.security.config_recorder_name
+}
+
+output "nexus_secret_arn" {
+  description = "ARN of the Nexus registry secret in Secrets Manager"
+  value       = module.secrets_manager.nexus_secret_arn
+  sensitive   = true
+}
+

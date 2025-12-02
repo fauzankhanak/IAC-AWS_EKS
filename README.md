@@ -31,6 +31,9 @@ This Terraform configuration provides a production-ready EKS cluster infrastruct
 - **Container Registry**: Integration with Nexus registry for secure image pulling
 - **Monitoring & Logging**: Pre-configured Prometheus, Grafana, ELK stack, and Kafka
 - **State Management**: S3 backend with DynamoDB locking
+- **Security Services**: AWS GuardDuty, Security Hub, Config, CloudTrail, WAF, and Inspector
+- **Secrets Management**: AWS Secrets Manager integration for secure credential storage
+- **Kubernetes Security**: Pod Security Standards, Network Policies, and Resource Quotas
 
 ## Architecture
 
@@ -119,6 +122,19 @@ This Terraform configuration provides a production-ready EKS cluster infrastruct
 - ✅ **ELK Stack** - Elasticsearch, Logstash, and Kibana for logging
 - ✅ **Prometheus** - Metrics collection and alerting
 - ✅ **Grafana** - Visualization and dashboards
+
+### Security Services
+
+- ✅ **AWS GuardDuty** - Threat detection and monitoring
+- ✅ **AWS Security Hub** - Centralized security findings aggregation
+- ✅ **AWS Config** - Compliance monitoring and configuration tracking
+- ✅ **AWS CloudTrail** - API activity logging and audit trail
+- ✅ **AWS WAF** - Web application firewall for load balancer protection
+- ✅ **AWS Inspector** - Automated vulnerability assessment
+- ✅ **AWS Secrets Manager** - Secure credential storage and rotation
+- ✅ **Pod Security Standards** - Kubernetes pod security enforcement
+- ✅ **Network Policies** - Micro-segmentation and network isolation
+- ✅ **Resource Quotas** - Resource limits and fair usage enforcement
 
 ### State Management
 
@@ -552,7 +568,29 @@ Deploys additional workloads:
 
 ## Security Best Practices
 
-This infrastructure follows AWS and Kubernetes security best practices:
+This infrastructure implements comprehensive security using AWS security services and Kubernetes security features. For detailed security documentation, see [SECURITY.md](SECURITY.md).
+
+### AWS Security Services
+
+- ✅ **GuardDuty**: Continuous threat detection for S3, EKS, and EBS
+- ✅ **Security Hub**: Centralized security findings with CIS and AWS best practices
+- ✅ **Config**: Compliance monitoring with automated rules
+- ✅ **CloudTrail**: Complete API audit trail with CloudWatch integration
+- ✅ **WAF**: Protection against OWASP Top 10 and rate limiting
+- ✅ **Inspector**: Automated vulnerability scanning for EC2, ECR, and Lambda
+
+### Secrets Management
+
+- ✅ **AWS Secrets Manager**: Secure storage of Nexus credentials with KMS encryption
+- ✅ **IAM Policies**: Least-privilege access to secrets
+- ✅ **Integration**: Ready for Kubernetes IRSA integration
+
+### Kubernetes Security
+
+- ✅ **Pod Security Standards**: Enforced at namespace level (baseline/restricted)
+- ✅ **Network Policies**: Micro-segmentation and traffic isolation
+- ✅ **Resource Quotas**: Prevent resource exhaustion
+- ✅ **Limit Ranges**: Enforce resource limits on pods
 
 ### Network Security
 
@@ -580,7 +618,7 @@ This infrastructure follows AWS and Kubernetes security best practices:
 - ✅ Nexus registry integration for image scanning
 - ✅ Image pull secrets for private registries
 - ✅ Resource limits on all workloads
-- ✅ Network policies (can be added)
+- ✅ Network policies enabled
 
 ### State Security
 
@@ -697,10 +735,15 @@ Before applying to production:
 
 ## Additional Resources
 
+- [SECURITY.md](SECURITY.md) - Comprehensive security documentation
+- [POST_DEPLOYMENT.md](POST_DEPLOYMENT.md) - Post-deployment setup guide
+- [QUICK_START.md](QUICK_START.md) - Quick start guide
 - [AWS EKS Best Practices](https://aws.github.io/aws-eks-best-practices/)
 - [Terraform AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/)
+- [AWS GuardDuty Documentation](https://docs.aws.amazon.com/guardduty/)
+- [AWS Security Hub Documentation](https://docs.aws.amazon.com/securityhub/)
 
 ## License
 
